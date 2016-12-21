@@ -1,0 +1,43 @@
+<h2>Users</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th class="col-md-3" (click)="sort('id')">id<i [className]="getSortIcon('id')"></i></th>
+        <th class="col-md-1" (click)="sort('firstName')">first name<i [className]="getSortIcon('firstName')"></i></th>
+        <th class="col-md-1" (click)="sort('lastName')">last name<i [className]="getSortIcon('lastName')"></i></th>
+        <th class="col-md-2" (click)="sort('email')">email<i [className]="getSortIcon('email')"></i></th>
+        <th class="col-md-1" (click)="sort('dob')">date of birth<i [className]="getSortIcon('dob')"></i></th>
+        <th class="col-md-2">actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users | orderBy : [order]" (click)="edit(user)" (blur)="cancelEdit()">
+        <td>{{user.id}}</td>
+        <td *ngIf="selectedUser != user">{{user.firstName}}</td>
+        <td *ngIf="selectedUser == user"><input class="form-control" [(ngModel)]="user.firstName"></td>
+        <td *ngIf="selectedUser != user">{{user.lastName}}</td>
+        <td *ngIf="selectedUser == user"><input class="form-control" [(ngModel)]="user.lastName"></td>
+        <td *ngIf="selectedUser != user">{{user.email}}</td>
+        <td *ngIf="selectedUser == user"><input class="form-control" type="email" [(ngModel)]="user.email"></td>
+        <td *ngIf="selectedUser != user">{{user.dob}}</td>
+        <td *ngIf="selectedUser == user"><input class="form-control" type="date" [(ngModel)]="user.dob"/></td>
+        <td *ngIf="selectedUser != user">
+            <button (click)="delete(user); $event.stopPropagation()" class="btn btn-danger">delete</button>
+        </td>
+        <td *ngIf="selectedUser == user">
+            <button (click)="update(user); $event.stopPropagation()" class="btn btn-warning">save</button>
+            <button (click)="cancelEdit(); $event.stopPropagation()" class="btn">cancel</button>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td [class.has-error]="formErrors.includes('firstName')"><input class="form-control" [(ngModel)]="newUser.firstName" required></td>
+        <td [class.has-error]="formErrors.includes('lastName')"><input class="form-control" [(ngModel)]="newUser.lastName" required></td>
+        <td [class.has-error]="formErrors.includes('email')"><input class="form-control" type="email" [(ngModel)]="newUser.email" required></td>
+        <td [class.has-error]="formErrors.includes('dob')"><input class="form-control" type="date" [(ngModel)]="newUser.dob" required></td>
+        <td>
+            <button (click)="add();" class="btn btn-success">add</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
